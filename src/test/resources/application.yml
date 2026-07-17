@@ -1,0 +1,14 @@
+kestra:
+  repository:
+    type: memory
+  queue:
+    type: memory
+  storage:
+    type: local
+    local:
+      base-path: /tmp/unittest
+  url: https://mysuperhost.com/kestra/ui
+
+micronaut:
+  server:
+    port: 59443
