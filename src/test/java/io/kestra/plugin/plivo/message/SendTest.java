@@ -13,6 +13,7 @@ import io.kestra.core.runners.RunContext;
 import io.kestra.core.runners.RunContextFactory;
 
 import jakarta.inject.Inject;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -92,7 +93,8 @@ class SendTest {
     }
 
     @SuperBuilder
-    static class TestSend extends Send {
+    @NoArgsConstructor(force = true)
+    public static class TestSend extends Send {
         private final String base;
 
         @Override

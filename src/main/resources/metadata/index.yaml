@@ -1,0 +1,8 @@
+group: io.kestra.plugin.plivo
+name: "plivo"
+title: "Plivo"
+description: "Tasks and triggers that send SMS, receive inbound SMS, and place voice calls through Plivo."
+body: "Provide your Plivo Auth ID and Auth Token, then send an SMS, place a voice call with an answer URL, or poll for inbound SMS to trigger a flow. Credentials are supplied per task and stored as Kestra secrets."
+videos: []
+createdBy: "Plivo"
+managedBy: "Plivo"

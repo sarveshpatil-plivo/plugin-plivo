@@ -1,0 +1,8 @@
+group: io.kestra.plugin.plivo.message
+name: "message"
+title: "Plivo Messaging"
+description: "Tasks and triggers that send and receive SMS through the Plivo Messages API."
+body: "Provide your Plivo Auth ID and Auth Token plus from and to numbers and message text to send an SMS, or poll the Messages API on an interval to trigger a flow on inbound SMS."
+videos: []
+createdBy: "Plivo"
+managedBy: "Plivo"

@@ -1,0 +1,8 @@
+group: io.kestra.plugin.plivo.call
+name: "call"
+title: "Plivo Voice"
+description: "Tasks that place outbound voice calls through the Plivo Voice API."
+body: "Provide your Plivo Auth ID and Auth Token, a from and to number, and an answer URL that returns Plivo XML to place an outbound call from a Kestra workflow."
+videos: []
+createdBy: "Plivo"
+managedBy: "Plivo"
