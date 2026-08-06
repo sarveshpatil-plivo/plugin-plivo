@@ -1,0 +1,8 @@
+group: io.kestra.plugin.plivo.security
+name: "security"
+title: "Plivo Security"
+description: "Tasks that secure inbound Plivo webhooks by validating their request signature."
+body: "Recompute and validate the Plivo V3 webhook signature so a flow only acts on inbound SMS or call POSTs that genuinely came from Plivo."
+videos: []
+createdBy: "Plivo"
+managedBy: "Plivo"

@@ -10,8 +10,17 @@ A standalone Kestra plugin (`kestra-io/plugin-*` model) that integrates Plivo. K
 
 - `io.kestra.plugin.plivo.AbstractPlivoConnection` — `Task` base holding `authId`/`authToken`, HTTP client config, and static helpers `basicAuthHeader` and `accountResourceUrl`.
 - `io.kestra.plugin.plivo.message.AbstractMessageSend` / `Send` — SMS send.
-- `io.kestra.plugin.plivo.message.Trigger` — polling trigger for inbound SMS.
+- `io.kestra.plugin.plivo.message.Trigger` — polling trigger for inbound SMS (metadata-only fallback).
 - `io.kestra.plugin.plivo.call.MakeCall` — outbound voice call.
+- `io.kestra.plugin.plivo.security.VerifySignature` — validates the Plivo V3 webhook signature so a flow can trust an inbound SMS/call POST received by the core `io.kestra.plugin.core.trigger.Webhook` trigger.
+
+## Inbound webhooks (real-time path)
+
+A Kestra plugin cannot register its own HTTP endpoint — the built-in `core.trigger.Webhook` owns HTTP ingress, and `RealtimeTriggerInterface` is for queue consumers, not HTTP. So the real-time inbound path is: core Webhook trigger receives Plivo's POST → `VerifySignature` confirms authenticity → act on `trigger.body` (SMS reply via `Send`, or answer a call by returning `<Response>` XML with `wait: true` + `responseContentType: text/xml`). See README for both example flows.
+
+### Plivo V3 signature algorithm (used by `VerifySignature`)
+
+Base string = `url + "?" + <params sorted by key, each key+value concatenated with no separators> + "." + nonce` (if params empty: `url + "." + nonce`). Signature = `base64(HMAC-SHA256(authToken, base))`. Compare against header `X-Plivo-Signature-Ma-V3` (also accept `X-Plivo-Signature-V3`); nonce header `X-Plivo-Signature-V3-Nonce`. `url` is the exact URL Plivo posted to. Verified live against real Plivo (inbound SMS round-trip) and unit-tested against a fixed vector.
 
 ## Plivo API contract
 
@@ -34,4 +43,4 @@ Do not change these status codes: SMS success is 202, Call success is 201.
 
 ## Status
 
-Phase 1 build. Compiles against `kestraVersion=1.3.13`, Java 21. NOT yet run through a live Plivo account or a full `./gradlew build` in CI — needs maintainer test + screenshots before any upstream catalog-adoption conversation.
+Compiles against `kestraVersion=1.3.13`, Java 21; `./gradlew build` passes lint + all tests locally (including `VerifySignatureTest` against a fixed signature vector). The signature algorithm is confirmed live against real Plivo via the sibling StackStorm pack's inbound-SMS round-trip (same algorithm). Send/MakeCall/Trigger still need a maintainer live run + screenshots before any upstream catalog-adoption conversation.
